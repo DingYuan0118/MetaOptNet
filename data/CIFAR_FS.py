@@ -27,7 +27,7 @@ from pdb import set_trace as breakpoint
 
 
 # Set the appropriate paths of the datasets here.
-_CIFAR_FS_DATASET_DIR = '/mnt/cube/datasets/few-shot/CIFAR_FS'
+_CIFAR_FS_DATASET_DIR = './data/CIFAR_FS'
 
 def buildLabelIndex(labels):
     label2inds = {}
