@@ -42,7 +42,7 @@ def get_model(options):
     elif options.network == 'ResNet':
         if options.dataset == 'miniImageNet' or options.dataset == 'tieredImageNet':
             network = resnet12(avg_pool=False, drop_rate=0.1, dropblock_size=5).cuda()
-            network = torch.nn.DataParallel(network, device_ids=[0, 1, 2, 3])
+            network = torch.nn.DataParallel(network, device_ids=list(range(opt.num_gpu)))
         else:
             network = resnet12(avg_pool=False, drop_rate=0.1, dropblock_size=2).cuda()
     else:
@@ -138,8 +138,8 @@ if __name__ == '__main__':
         nTestNovel=opt.train_way * opt.train_query, # num test examples for all the novel categories
         nTestBase=0, # num test examples for all the base categories
         batch_size=opt.episodes_per_batch,
-        num_workers=4,
-        epoch_size=opt.episodes_per_batch * 1000, # num of batches per epoch
+        num_workers=0,
+        epoch_size=opt.episodes_per_batch * 1000, # num of episodes(batch_size * episodes_per_batch) per epoch
     )
 
     dloader_val = data_loader(
@@ -155,6 +155,8 @@ if __name__ == '__main__':
     )
 
     set_gpu(opt.gpu)
+    gpu_list = [int(x) for x in opt.gpu.split(',')]
+    opt.num_gpu = len(gpu_list)
     check_dir('./experiments/')
     check_dir(opt.save_path)
     

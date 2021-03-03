@@ -165,7 +165,7 @@ class FewShotDataloader():
                  nTestBase=15*5, # number of test examples for all the base categories.
                  batch_size=1, # number of training episodes per batch.
                  num_workers=4,
-                 epoch_size=2000, # number of batches per epoch.
+                 epoch_size=2000, # number of episodes(batch_size * episodes_per_batch) per epoch.
                  ):
 
         self.dataset = dataset
